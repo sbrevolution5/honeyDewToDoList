@@ -62,3 +62,7 @@ body{
 tr.complete> td:nth-child(-n+4){
     text-decoration: line-through;
 }
+.img-small{
+    height:auto;
+    width: 500px;
+}
