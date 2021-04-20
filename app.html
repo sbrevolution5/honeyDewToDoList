@@ -54,12 +54,12 @@
         <p class="lead">A To-Do List App</p>
         <div class="container">
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
+                <button class="btn btn-secondary dropdown-toggle btn-block" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
                             Filter tasks
                         </button>
-                <div class="dropdown-menu" aria-labelledby="triggerId">
-                    <a class="dropdown-item" onclick="filter(this)" data-filter="all">All Tasks</a>
+                <div class="dropdown-menu" aria-labelledby="triggerId" style="width: 100%;">
+                    <a class="dropdown-item btn-block" onclick="filter(this)" data-filter="all">All Tasks</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" onclick="filter(this)" data-filter="complete">Completed Tasks</a>
                     <a class="dropdown-item" onclick="filter(this)" data-filter="incomplete">Incomplete Tasks</a>
@@ -71,6 +71,11 @@
             </button>
             <button type="button" class="btn btn-danger btn-block mb-2" onclick="clearAllTasks()">Clear All Tasks</button>
 
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <h4 id="filterHeader"></h4>
+            </div>
         </div>
         <table class="table table-dark">
             <thead>
@@ -132,7 +137,7 @@
                         <label for="">Due Date</label>
                         <input type="date" name="" id="taskDate" class="form-control" placeholder=""
                             aria-describedby="helpId">
-                        <small id="helpId" class="text-muted">Help text</small>
+                        <small id="helpId" class="text-muted">Complete Task by this date, Will turn Yellow if overdue</small>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -164,7 +169,8 @@
                         <label for="">Due Date</label>
                         <input type="date" name="" id="editDate" class="form-control" placeholder=""
                             aria-describedby="helpId">
-                        <small id="helpId" class="text-muted">Help text</small>
+                        <small id="helpId" class="text-muted">Complete Task by this date, Will turn Yellow if
+                            overdue</small>
                     </div>
                 </div>
                 <div class="modal-footer">

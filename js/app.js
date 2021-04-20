@@ -9,19 +9,35 @@ class Task {
 }
 //Setup page
 function pageLoad() {
+    defaultLocalStorage()
+    //sets date input to today's date
     $('#editModal').modal({
         show: false
     })
-    defaultLocalStorage()
     displayTasks();
 }
 //create new
 function addNewTask() {
     let loc = getLocalStorage()
-    let taskList = loc.array;
-    let filter = loc.filter;
+    let taskList = loc.list;
+    let filter = loc.filterName;
     let taskName = document.getElementById("taskName").value
     let taskDate = document.getElementById("taskDate").value
+    if(taskName == ""){
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Your task has no name!' 
+        })
+        return
+    } else if (taskDate == ''){
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Date is Invalid!'
+        })
+        return
+    }
     let task = new Task(taskName, taskDate)
     taskList.push(task)
     setLocalStorage(loc)
@@ -33,8 +49,8 @@ function taskEdit(node) {
     let id = getIdFromParentOfNode(node)
 
     let loc = getLocalStorage()
-    let taskList = loc.array;
-    let filter = loc.filter;
+    let taskList = loc.list;
+    let filter = loc.filterName;
     let task = taskList.find(t => t.id == id);
     //TODO: trigger modal, with values set to the task
     $('#editModal').modal('show');
@@ -50,8 +66,8 @@ function taskEdit(node) {
 function taskEditSave(node) {
     let id = node.getAttribute("data-id")
     let loc = getLocalStorage()
-    let taskList = loc.array;
-    let filter = loc.filter;
+    let taskList = loc.list;
+    let filter = loc.filterName;
     let task = taskList.find(t => t.id == id);
     task.name = document.getElementById("editName").value
     task.dueDate = document.getElementById("editDate").value
@@ -78,8 +94,8 @@ function taskDelete(node) {
             )
             let id = getIdFromParentOfNode(node)
             let loc = getLocalStorage()
-            let taskList = loc.array;
-            let filter = loc.filter;
+            let taskList = loc.list;
+            let filter = loc.filterName;
             //finds which object has the id
             let task = taskList.find(t => t.id == id);
             //finds index of that object
@@ -94,8 +110,8 @@ function taskDelete(node) {
 function taskComplete(node) {
     let id = getIdFromParentOfNode(node)
     let loc = getLocalStorage()
-    let taskList = loc.array;
-    let filter = loc.filter;
+    let taskList = loc.list;
+    let filter = loc.filterName;
     let task = taskList.find(t => t.id == id); //returns entire object not index
     task.complete = true
     setLocalStorage(loc)
@@ -128,7 +144,7 @@ function clearAllTasks() {
 //filter tasks by complete or not(?)
 function filter(node){
     let loc = getLocalStorage()
-    loc.filter = this.getAttribute("data-filter")
+    loc.filterName = node.getAttribute("data-filter")
     setLocalStorage(loc)
     displayTasks()
 }
@@ -136,8 +152,9 @@ function filter(node){
 //displayTasks
 function displayTasks() {
     let loc = getLocalStorage()
-    let taskList = loc.array;
-    let filter = loc.filter;
+    let taskList = loc.list;
+    let filter = loc.filterName;
+    document.getElementById("filterHeader").innerText = `Current Filter: ${filter}`
     let template = document.getElementById("displayTemplate")
     let tableBody = document.getElementById("taskBody");
     tableBody.innerHTML = ""
@@ -194,10 +211,11 @@ function getIdFromParentOfNode(node) {
 
 function defaultLocalStorage() {
     if (getLocalStorage() == null) {
-        setLocalStorage(JSON.stringify({
-            array: new Array(),
-            filter: "all"
-        }))
+        let defObj = {
+            list: new Array(),
+            filterName: "all"
+        }
+        setLocalStorage(defObj)
     }
 }
 
