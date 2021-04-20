@@ -59,8 +59,14 @@ function displayTasks() {
     let template = document.getElementById("displayTemplate")
     let tableBody = document.getElementById("taskBody");
     tableBody.innerHTML = ""
+    
     for (let i = 0; i < taskList.length; i++) {
         let row = document.importNode(template.content, true)
+        if(taskList[i].complete){
+            row.getElementById("rowTemp").setAttribute("class","complete")
+        }else{//If not complete, so user can toggle
+            row.getElementById("rowTemp").setAttribute("class","")
+        }
         row.getElementById("displayId").textContent = taskList[i].id
         row.getElementById("displayTaskName").textContent = taskList[i].name
         row.getElementById("displayDateCreated").textContent = displayDate(taskList[i].createdDate)
