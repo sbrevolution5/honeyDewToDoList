@@ -23,17 +23,19 @@ function addNewTask() {
     displayTasks()
 }
 //edit title/date
-function editTask(id) {
+function editTask(node) {
+    let id = getIdFromParentOfNode(node)
     let taskList = getLocalStorage()
     let task = taskList.find(t => t.id == id);
-    //trigger modal, with values set to the task
+    //TODO: trigger modal, with values set to the task
     task.taskName = document.getElementById("taskName").value
     task.taskDate = document.getElementById("taskDate").value
 
     displayTasks()
 }
 //delete task
-function deleteTask(id) {
+function deleteTask(node) {
+    let id = getIdFromParentOfNode(node)
     let taskList = getLocalStorage()
     //finds which object has the id
     let task = taskList.find(t => t.id == id);
@@ -44,7 +46,8 @@ function deleteTask(id) {
     displayTasks()
 }
 //mark task complete (or not complete?)
-function taskComplete(id) {
+function taskComplete(node) {
+    let id =getIdFromParentOfNode(node)
     let taskList = getLocalStorage()
     let task = taskList.find(t => t.id == id); //returns entire object not index
     task.complete = true
@@ -88,6 +91,15 @@ function displayDate(dateString) {
     return res
 }
 // ----------------UTILITY FUNCTIONS -----------------------
+function getIdFromParentOfNode(node){
+    // structure is             <td id="displayControls" data-id="">
+    //             <div class="btn-group" role="group" aria-label="">
+    //                 <button type="button" class="btn btn-primary">✔️</button>
+    //                 <button type="button" class="btn btn-secondary">✏️</button>
+    //                 <button type="button" class="btn btn-danger">🗑️</button>
+    // id is 2 parents above node
+    return node.parent().parent().attr("data-id")
+}
 function defaultLocalStorage() {
     if (getLocalStorage() == null) {
         setLocalStorage(new Array())
