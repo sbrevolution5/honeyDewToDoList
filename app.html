@@ -51,15 +51,28 @@
     <!-- Begin page content -->
     <main role="main" class="container">
         <h1 class="mt-5">HoneyDew</h1>
-        <p class="lead">A To-Do List.</p>
+        <p class="lead">A To-Do List App</p>
         <div class="container">
 
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#newTaskModal">
+            <button type="button" class="btn btn-block btn-primary btn-lg" data-toggle="modal" data-target="#newTaskModal">
                 Create New Task
             </button>
 
         </div>
+        <table class="table table-dark">
+            <thead>
+                <tr>
+                    <th>Task Name</th>
+                    <th>Date Created</th>
+                    <th>Date Due</th>
+                    <th>Controls</th>
+                </tr>
+            </thead>
+            <tbody id="taskBody">
+                
+            </tbody>
+        </table>
 
     </main>
 
@@ -69,13 +82,20 @@
     </footer></span>
     </div>
     </footer>
-    <template>
+    <template id="displayTemplate">
         <tr>
-            <td class="d-none" id="displayid"></td>
+            <td class="d-none" id="displayId"></td>
             <td id="displayTaskName"></td>
-            <td id=""></td>
-            <td></td>
-            <td></td>
+            <td id="displayDateCreated"></td>
+            <td id="displayDateDue"></td>
+            <td id="tdCrud" class="d-none" data-id=""></td>
+            <td id="displayControls">
+                <div class="btn-group" role="group" aria-label="">
+                    <button type="button" class="btn btn-primary">✔️</button>
+                    <button type="button" class="btn btn-secondary">✏️</button>
+                    <button type="button" class="btn btn-danger">🗑️</button>
+                </div>
+            </td>
         </tr>
     </template>
     <!-- Modal -->
@@ -98,14 +118,14 @@
                     </div>
                     <div class="form-group">
                         <label for="">Due Date</label>
-                        <input type="date" name="" id="taskdate" class="form-control" placeholder=""
+                        <input type="date" name="" id="taskDate" class="form-control" placeholder=""
                             aria-describedby="helpId">
                         <small id="helpId" class="text-muted">Help text</small>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="saveBtn">Save</button>
+                    <button type="button" class="btn btn-primary" id="saveBtn" data-dismiss="modal">Save</button>
                 </div>
             </div>
         </div>
@@ -124,7 +144,8 @@
     </script>
     <script src="/js/app.js"></script>
     <script>
-        document.getElementById("saveBtn").addEventListener("click")
+        window.addEventListener("load", pageLoad)
+        document.getElementById("saveBtn").addEventListener("click", addNewTask)
     </script>
 </body>
 
