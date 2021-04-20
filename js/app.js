@@ -20,7 +20,6 @@ function pageLoad() {
 function addNewTask() {
     let loc = getLocalStorage()
     let taskList = loc.list;
-    let filter = loc.filterName;
     let taskName = document.getElementById("taskName").value
     let taskDate = document.getElementById("taskDate").value
     if(taskName == ""){
@@ -50,7 +49,6 @@ function taskEdit(node) {
 
     let loc = getLocalStorage()
     let taskList = loc.list;
-    let filter = loc.filterName;
     let task = taskList.find(t => t.id == id);
     //TODO: trigger modal, with values set to the task
     $('#editModal').modal('show');
@@ -67,7 +65,6 @@ function taskEditSave(node) {
     let id = node.getAttribute("data-id")
     let loc = getLocalStorage()
     let taskList = loc.list;
-    let filter = loc.filterName;
     let task = taskList.find(t => t.id == id);
     task.name = document.getElementById("editName").value
     task.dueDate = document.getElementById("editDate").value
@@ -111,7 +108,6 @@ function taskComplete(node) {
     let id = getIdFromParentOfNode(node)
     let loc = getLocalStorage()
     let taskList = loc.list;
-    let filter = loc.filterName;
     let task = taskList.find(t => t.id == id); //returns entire object not index
     task.complete = true
     setLocalStorage(loc)
