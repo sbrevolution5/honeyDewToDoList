@@ -154,9 +154,9 @@ function displayTasks() {
     let tableBody = document.getElementById("taskBody");
     tableBody.innerHTML = ""
     //uses filter to alter data
-    if(filter =="complete"){
+    if(filter =="Complete"){
         taskList = taskList.filter(t=>t.complete)
-    }else if (filter == "incomplete"){
+    }else if (filter == "Incomplete"){
         taskList = taskList.filter(t=>!t.complete)
     }
     for (let i = 0; i < taskList.length; i++) {
@@ -208,7 +208,7 @@ function defaultLocalStorage() {
     if (getLocalStorage() == null) {
         let defObj = {
             list: new Array(),
-            filterName: "all"
+            filterName: "All"
         }
         setLocalStorage(defObj)
     }
