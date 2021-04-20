@@ -9,51 +9,56 @@ class Task {
 }
 //Setup page
 function pageLoad() {
+    $('#editModal').modal({
+        show: false
+    })
     defaultLocalStorage()
     displayTasks();
 }
 //create new
 function addNewTask() {
-    let taskList = getLocalStorage();
+    let loc = getLocalStorage()
+    let taskList = loc.array;
+    let filter = loc.filter;
     let taskName = document.getElementById("taskName").value
     let taskDate = document.getElementById("taskDate").value
     let task = new Task(taskName, taskDate)
     taskList.push(task)
-    setLocalStorage(taskList)
+    setLocalStorage(loc)
     displayTasks()
+
 }
 //edit title/date
 function taskEdit(node) {
     let id = getIdFromParentOfNode(node)
-    let taskList = getLocalStorage()
+
+    let loc = getLocalStorage()
+    let taskList = loc.array;
+    let filter = loc.filter;
     let task = taskList.find(t => t.id == id);
     //TODO: trigger modal, with values set to the task
-    task.taskName = document.getElementById("taskName").value
-    task.taskDate = document.getElementById("taskDate").value
-    setLocalStorage(taskList)
+    $('#editModal').modal('show');
+    document.getElementById("editName").value = task.name
+    //used to set the date to whatever is being edited
+    document.getElementById("editDate").value = task.dueDate.substring(0, 10)
+    //sets the button's data-id to the task id, 
+    document.getElementById("saveEditBtn").setAttribute("data-id", task.id)
+    setLocalStorage(loc)
     displayTasks()
 }
-function clearAllTasks(){
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete ALL tasks!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            setLocalStorage([])
-            displayTasks()
-            Swal.fire(
-                'Deleted!',
-                'All tasks Deleted!',
-                'success'
-            )
-        }
-    })
+
+function taskEditSave(node) {
+    let id = node.getAttribute("data-id")
+    let loc = getLocalStorage()
+    let taskList = loc.array;
+    let filter = loc.filter;
+    let task = taskList.find(t => t.id == id);
+    task.name = document.getElementById("editName").value
+    task.dueDate = document.getElementById("editDate").value
+    setLocalStorage(loc)
+    displayTasks();
 }
+
 //delete task
 function taskDelete(node) {
     Swal.fire({
@@ -68,45 +73,92 @@ function taskDelete(node) {
         if (result.isConfirmed) {
             Swal.fire(
                 'Deleted!',
-                'Your file has been deleted.',
+                'Your task has been deleted.',
                 'success'
             )
             let id = getIdFromParentOfNode(node)
-            let taskList = getLocalStorage()
+            let loc = getLocalStorage()
+            let taskList = loc.array;
+            let filter = loc.filter;
             //finds which object has the id
             let task = taskList.find(t => t.id == id);
             //finds index of that object
             let index = taskList.indexOf(task)
             taskList.splice(index, 1) // removes task found
-            setLocalStorage(taskList)
+            setLocalStorage(loc)
             displayTasks()
         }
     })
 }
 //mark task complete (or not complete?)
 function taskComplete(node) {
-    let id =getIdFromParentOfNode(node)
-    let taskList = getLocalStorage()
+    let id = getIdFromParentOfNode(node)
+    let loc = getLocalStorage()
+    let taskList = loc.array;
+    let filter = loc.filter;
     let task = taskList.find(t => t.id == id); //returns entire object not index
     task.complete = true
-    setLocalStorage(taskList)
+    setLocalStorage(loc)
     displayTasks()
 }
+
+function clearAllTasks() {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete ALL tasks!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            setLocalStorage(null)
+            //clears local storage, then resets with filter
+            defaultLocalStorage()
+            displayTasks()
+            Swal.fire(
+                'Deleted!',
+                'All tasks Deleted!',
+                'success'
+            )
+        }
+    })
+}
 //filter tasks by complete or not(?)
+function filter(node){
+    let loc = getLocalStorage()
+    loc.filter = this.getAttribute("data-filter")
+    setLocalStorage(loc)
+    displayTasks()
+}
 // -----------------DISPLAY------------------
-//displayTasks TODO:
+//displayTasks
 function displayTasks() {
-    let taskList = getLocalStorage()
+    let loc = getLocalStorage()
+    let taskList = loc.array;
+    let filter = loc.filter;
     let template = document.getElementById("displayTemplate")
     let tableBody = document.getElementById("taskBody");
     tableBody.innerHTML = ""
-    
+    //uses filter to alter data
+    if(filter =="complete"){
+        taskList = taskList.filter(t=>t.complete)
+    }else if (filter == "incomplete"){
+        taskList = taskList.filter(t=>!t.complete)
+    }
     for (let i = 0; i < taskList.length; i++) {
         let row = document.importNode(template.content, true)
-        if(taskList[i].complete){
-            row.getElementById("rowTemp").setAttribute("class","complete")
-        }else{//If not complete, so user can toggle
-            row.getElementById("rowTemp").setAttribute("class","")
+        if (taskList[i].complete) {
+            row.getElementById("rowTemp").setAttribute("class", "complete")
+        } else { //If not complete, so user can toggle
+            row.getElementById("rowTemp").setAttribute("class", "")
+            //highlights incomplete tasks that are overdue
+            if (new Date(taskList[i].dueDate) < Date.now()) {
+                //keeps any current classes on the row
+                // let tempClass = row.getElementById("rowTemp").getAttribute("class")
+                row.getElementById("rowTemp").setAttribute("class", "bg-warning")
+            }
         }
         row.getElementById("displayId").textContent = taskList[i].id
         row.getElementById("displayTaskName").textContent = taskList[i].name
@@ -121,7 +173,7 @@ function displayTasks() {
 function displayDate(dateString) {
     let mydate = new Date(dateString)
     let res = ""
-    res += mydate.getMonth()+1
+    res += mydate.getMonth() + 1
     res += "/"
     res += mydate.getDate()
     res += "/"
@@ -129,7 +181,7 @@ function displayDate(dateString) {
     return res
 }
 // ----------------UTILITY FUNCTIONS -----------------------
-function getIdFromParentOfNode(node){
+function getIdFromParentOfNode(node) {
     // structure is             <td id="displayControls" data-id="">
     //             <div class="btn-group" role="group" aria-label="">
     //                 <button type="button" class="btn btn-primary">✔️</button>
@@ -139,9 +191,13 @@ function getIdFromParentOfNode(node){
     let id = node.parentNode.parentNode.getAttribute("data-id")
     return id
 }
+
 function defaultLocalStorage() {
     if (getLocalStorage() == null) {
-        setLocalStorage(new Array())
+        setLocalStorage(JSON.stringify({
+            array: new Array(),
+            filter: "all"
+        }))
     }
 }
 

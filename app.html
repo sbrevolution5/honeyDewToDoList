@@ -53,7 +53,18 @@
         <h1 class="mt-5">HoneyDew</h1>
         <p class="lead">A To-Do List App</p>
         <div class="container">
-
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                            Filter tasks
+                        </button>
+                <div class="dropdown-menu" aria-labelledby="triggerId">
+                    <a class="dropdown-item" onclick="filter(this)" data-filter="all">All Tasks</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" onclick="filter(this)" data-filter="complete">Completed Tasks</a>
+                    <a class="dropdown-item" onclick="filter(this)" data-filter="incomplete">Incomplete Tasks</a>
+                </div>
+            </div>
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-block btn-primary btn-lg" data-toggle="modal" data-target="#newTaskModal">
                 Create New Task
@@ -132,6 +143,37 @@
         </div>
     </div>
 
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Task</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="">Task Name</label>
+                        <input type="text" name="" id="editName" class="form-control" placeholder="Input task name here"
+                            aria-describedby="helpId">
+                        <small id="helpId" class="text-muted">Name of task</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Due Date</label>
+                        <input type="date" name="" id="editDate" class="form-control" placeholder=""
+                            aria-describedby="helpId">
+                        <small id="helpId" class="text-muted">Help text</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveEditBtn" onclick="taskEditSave(this)" data-dismiss="modal" data-id="">Save Edit</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
