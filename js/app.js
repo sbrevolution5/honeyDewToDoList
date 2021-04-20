@@ -33,17 +33,55 @@ function taskEdit(node) {
     setLocalStorage(taskList)
     displayTasks()
 }
+function clearAllTasks(){
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete ALL tasks!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            setLocalStorage([])
+            displayTasks()
+            Swal.fire(
+                'Deleted!',
+                'All tasks Deleted!',
+                'success'
+            )
+        }
+    })
+}
 //delete task
 function taskDelete(node) {
-    let id = getIdFromParentOfNode(node)
-    let taskList = getLocalStorage()
-    //finds which object has the id
-    let task = taskList.find(t => t.id == id);
-    //finds index of that object
-    let index = taskList.indexOf(task)
-    taskList.splice(index, 1) // removes task found
-    setLocalStorage(taskList)
-    displayTasks()
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+            )
+            let id = getIdFromParentOfNode(node)
+            let taskList = getLocalStorage()
+            //finds which object has the id
+            let task = taskList.find(t => t.id == id);
+            //finds index of that object
+            let index = taskList.indexOf(task)
+            taskList.splice(index, 1) // removes task found
+            setLocalStorage(taskList)
+            displayTasks()
+        }
+    })
 }
 //mark task complete (or not complete?)
 function taskComplete(node) {
@@ -74,7 +112,7 @@ function displayTasks() {
         row.getElementById("displayTaskName").textContent = taskList[i].name
         row.getElementById("displayDateCreated").textContent = displayDate(taskList[i].createdDate)
         row.getElementById("displayDateDue").textContent = displayDate(taskList[i].dueDate)
-        row.getElementById("tdCrud").setAttribute("data-id", taskList[i].id)
+        row.getElementById("displayControls").setAttribute("data-id", taskList[i].id)
         tableBody.appendChild(row);
     }
 
@@ -98,7 +136,8 @@ function getIdFromParentOfNode(node){
     //                 <button type="button" class="btn btn-secondary">✏️</button>
     //                 <button type="button" class="btn btn-danger">🗑️</button>
     // id is 2 parents above node
-    return node.parentNode.parentNode.getAttribute("data-id")
+    let id = node.parentNode.parentNode.getAttribute("data-id")
+    return id
 }
 function defaultLocalStorage() {
     if (getLocalStorage() == null) {
