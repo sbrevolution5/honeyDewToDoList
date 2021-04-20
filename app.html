@@ -91,9 +91,9 @@
             <td id="tdCrud" class="d-none" data-id=""></td>
             <td id="displayControls" data-id="">
                 <div class="btn-group" role="group" aria-label="">
-                    <button type="button" class="btn btn-primary">✔️</button>
-                    <button type="button" class="btn btn-secondary">✏️</button>
-                    <button type="button" class="btn btn-danger">🗑️</button>
+                    <button type="button" class="btn btn-primary" onclick="taskComplete(this)">✔️</button>
+                    <button type="button" class="btn btn-secondary" onclick="taskEdit(this)">✏️</button>
+                    <button type="button" class="btn btn-danger" onclick="taskDelete(this)">🗑️</button>
                 </div>
             </td>
         </tr>

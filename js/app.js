@@ -23,18 +23,18 @@ function addNewTask() {
     displayTasks()
 }
 //edit title/date
-function editTask(node) {
+function taskEdit(node) {
     let id = getIdFromParentOfNode(node)
     let taskList = getLocalStorage()
     let task = taskList.find(t => t.id == id);
     //TODO: trigger modal, with values set to the task
     task.taskName = document.getElementById("taskName").value
     task.taskDate = document.getElementById("taskDate").value
-
+    setLocalStorage(taskList)
     displayTasks()
 }
 //delete task
-function deleteTask(node) {
+function taskDelete(node) {
     let id = getIdFromParentOfNode(node)
     let taskList = getLocalStorage()
     //finds which object has the id
@@ -42,7 +42,7 @@ function deleteTask(node) {
     //finds index of that object
     let index = taskList.indexOf(task)
     taskList.splice(index, 1) // removes task found
-
+    setLocalStorage(taskList)
     displayTasks()
 }
 //mark task complete (or not complete?)
@@ -98,7 +98,7 @@ function getIdFromParentOfNode(node){
     //                 <button type="button" class="btn btn-secondary">✏️</button>
     //                 <button type="button" class="btn btn-danger">🗑️</button>
     // id is 2 parents above node
-    return node.parent().parent().attr("data-id")
+    return node.parentNode.parentNode.getAttribute("data-id")
 }
 function defaultLocalStorage() {
     if (getLocalStorage() == null) {
