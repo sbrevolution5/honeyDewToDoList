@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="css/site.css">
-<link rel="stylesheet" href="css/honeydew.css">
+    <link rel="stylesheet" href="css/honeydew.css">
 </head>
 
 <body>
@@ -43,7 +43,7 @@
                         <a class="nav-link" href="profile.html">About The Author</a>
                     </li>
                 </ul>
-                
+
             </div>
         </nav>
     </header>
@@ -53,42 +53,54 @@
         <h1 class="mt-5">HoneyDew</h1>
         <p class="lead">A To-Do List.</p>
         <div class="container">
-            
+
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#newTaskModal">
-              Create New Task
+                Create New Task
             </button>
-            
+
         </div>
-        
+
     </main>
-    
+
     <footer class="footer footer-color">
         <div class="container">
             <span class="text-muted">&copy; <a href="http://sethbcoding.com">Seth A. Burleson</a> 2021
-            </footer></span>
-        </div>
+    </footer></span>
+    </div>
     </footer>
+    <template>
+        <tr>
+            <td class="d-none" id="displayid"></td>
+            <td id="displayTaskName"></td>
+            <td id=""></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </template>
     <!-- Modal -->
-    <div class="modal fade" id="newTaskModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal fade" id="newTaskModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                      <label for="">Task Name</label>
-                      <input type="text" name="" id="taskName" class="form-control" placeholder="Input task name here" aria-describedby="helpId">
-                      <small id="helpId" class="text-muted">Name of task</small>
+                        <label for="">Task Name</label>
+                        <input type="text" name="" id="taskName" class="form-control" placeholder="Input task name here"
+                            aria-describedby="helpId">
+                        <small id="helpId" class="text-muted">Name of task</small>
                     </div>
                     <div class="form-group">
-                      <label for="">Due Date</label>
-                      <input type="date" name="" id="taskdate" class="form-control" placeholder="" aria-describedby="helpId">
-                      <small id="helpId" class="text-muted">Help text</small>
+                        <label for="">Due Date</label>
+                        <input type="date" name="" id="taskdate" class="form-control" placeholder=""
+                            aria-describedby="helpId">
+                        <small id="helpId" class="text-muted">Help text</small>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -98,7 +110,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

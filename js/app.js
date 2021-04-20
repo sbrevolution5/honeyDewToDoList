@@ -8,6 +8,9 @@ class Task {
     }
 }
 //Setup page
+function pageLoad() {
+    displayTasks();
+}
 //create new
 function addNewTask(){
     let taskList = getLocalStorage();
@@ -21,6 +24,11 @@ function addNewTask(){
 //edit title/date
 function editTask(id) {
     let taskList = getLocalStorage()
+    let task = taskList.find(t => t.id == id);
+    //trigger modal, with values set to the task
+    task.taskName = document.getElementById("taskName").value
+    task.taskDate = document.getElementById("taskDate").value
+    
     displayTasks()
 }
 //delete task
@@ -49,6 +57,11 @@ function displayTasks(){
 
 }
 // ----------------UTILITY FUNCTIONS -----------------------
+function defaultLocalStorage() {
+    if (getLocalStorage == null){
+        setLocalStorage(new Array())
+    }
+}
 function setLocalStorage(data){
     localStorage.setItem("honeyDewData", JSON.stringify(data))
 }
