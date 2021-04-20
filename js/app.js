@@ -50,7 +50,6 @@ function taskEdit(node) {
     let loc = getLocalStorage()
     let taskList = loc.list;
     let task = taskList.find(t => t.id == id);
-    //TODO: trigger modal, with values set to the task
     $('#editModal').modal('show');
     document.getElementById("editName").value = task.name
     //used to set the date to whatever is being edited
